@@ -13,11 +13,11 @@
  * You can do this in NodeJS or using the Bluebird NPM
  */
 
-var IP_RANGE_START = '192.168.26.200',
-	IP_RANGE_END = '192.168.26.220',
-	PORT_LIST = [80,8081],
+var IP_RANGE_START = '170.20.14.100',
+	IP_RANGE_END = '170.20.14.200',
+	PORT_LIST = [80,8081,9000,554],
 	USERNAME = 'admin',
-	PASSWORD = 'PASS99pass';
+	PASSWORD = 'admin';
 
 var Cam = require('../lib/onvif').Cam;
 const { promisify } = require("util");
@@ -25,24 +25,24 @@ const { promisify } = require("util");
 //var ipList = [];
 var ipList = generateRange(IP_RANGE_START, IP_RANGE_END);
 
-ipList.push("192.168.26.108");
-var portList = PORT_LIST;
+ipList.push("170.20.14.100");
+var portList = [80, 8081, 9000, 554];
 
 // hide error messages
 console.error = function(_err) {
 };
 
 // try each IP address and each Port
-ipList.forEach(function(ipEntry) {
-	portList.forEach(function(portEntry) {
-		console.log(ipEntry + ' ' + portEntry);
+ipList.forEach(function(ip) {
+	portList.forEach(function(port) {
+		console.log(ip + ' ' + port);
 
 		new Cam(
 			{
-				hostname: ipEntry,
+				hostname: ip,
 				username: USERNAME,
 				password: PASSWORD,
-				port: portEntry,
+				port: port,
 				timeout: 5000,
 			},
 			async function CamFunc(err) {
@@ -78,7 +78,7 @@ ipList.forEach(function(ipEntry) {
 
 
 				console.log('------------------------------');
-				console.log('Host: ' + ipEntry + ' Port: ' + portEntry);
+				console.log('Host: ' + ip + ' Port: ' + port);
 				console.log('Date: = ' + gotDate);
 				console.log('Info: = ' + JSON.stringify(gotInfo));
 				console.log(videoResults);
